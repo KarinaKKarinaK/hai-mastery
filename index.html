@@ -320,26 +320,26 @@
     <div class="progress-wrap"><strong id="progressMastered">0</strong>/<span id="progressTotal">0</span> mastered</div>
   </div>
   <nav class="tabs" id="tabs">
-    <button data-view="overview" class="active">Overview</button>
-    <button data-view="topics">Topic Mastery</button>
-    <button data-view="questions">Questions + Answers</button>
-    <button data-view="connections">Connections</button>
-    <button data-view="people">People &amp; Dates</button>
-    <button data-view="cheat">Cheat Sheet</button>
-    <button data-view="practice">Practice</button>
-    <button data-view="templates">Answer Templates</button>
+    <button data-view="overview" class="active" onclick="switchView('overview')">Overview</button>
+    <button data-view="topics" onclick="switchView('topics')">Topic Mastery</button>
+    <button data-view="questions" onclick="switchView('questions')">Questions + Answers</button>
+    <button data-view="connections" onclick="switchView('connections')">Connections</button>
+    <button data-view="people" onclick="switchView('people')">People &amp; Dates</button>
+    <button data-view="cheat" onclick="switchView('cheat')">Cheat Sheet</button>
+    <button data-view="practice" onclick="switchView('practice')">Practice</button>
+    <button data-view="templates" onclick="switchView('templates')">Answer Templates</button>
   </nav>
 </header>
 
 <nav id="mobileNav">
-  <button data-view="overview" class="active"><span class="nav-icon">🏠</span>Overview</button>
-  <button data-view="topics"><span class="nav-icon">📚</span>Topics</button>
-  <button data-view="questions"><span class="nav-icon">❓</span>Questions</button>
-  <button data-view="connections"><span class="nav-icon">🔗</span>Links</button>
-  <button data-view="people"><span class="nav-icon">👤</span>People</button>
-  <button data-view="cheat"><span class="nav-icon">📋</span>Cheat</button>
-  <button data-view="practice"><span class="nav-icon">✍️</span>Practice</button>
-  <button data-view="templates"><span class="nav-icon">📝</span>Templates</button>
+  <button data-view="overview" class="active" onclick="switchView('overview')"><span class="nav-icon">🏠</span>Overview</button>
+  <button data-view="topics" onclick="switchView('topics')"><span class="nav-icon">📚</span>Topics</button>
+  <button data-view="questions" onclick="switchView('questions')"><span class="nav-icon">❓</span>Questions</button>
+  <button data-view="connections" onclick="switchView('connections')"><span class="nav-icon">🔗</span>Links</button>
+  <button data-view="people" onclick="switchView('people')"><span class="nav-icon">👤</span>People</button>
+  <button data-view="cheat" onclick="switchView('cheat')"><span class="nav-icon">📋</span>Cheat</button>
+  <button data-view="practice" onclick="switchView('practice')"><span class="nav-icon">✍️</span>Practice</button>
+  <button data-view="templates" onclick="switchView('templates')"><span class="nav-icon">📝</span>Templates</button>
 </nav>
 
 <main>
@@ -1416,18 +1416,11 @@ function matchSearch(...fields) {
 /* ======================= TAB NAV ======================= */
 function switchView(view) {
   state.view = view;
-  document.querySelectorAll('#tabs button, #mobileNav button').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === view));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
   render();
 }
-
-document.getElementById('tabs').addEventListener('click', e => {
-  if (e.target.closest('button')) switchView(e.target.closest('button').dataset.view);
-});
-document.getElementById('mobileNav').addEventListener('click', e => {
-  if (e.target.closest('button')) switchView(e.target.closest('button').dataset.view);
-});
 
 document.getElementById('globalSearch').addEventListener('input', e => {
   state.search = e.target.value.trim();
@@ -1570,32 +1563,23 @@ function toggleTopic(id) {
   if (el) el.classList.toggle('open');
 }
 function jumpToTopic(id) {
-  state.view = 'topics';
-  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.view === 'topics'));
-  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-topics'));
-  render();
+  switchView('topics');
   setTimeout(() => {
     const el = document.querySelector(`.topic[data-id="${id}"]`);
     if (el) { el.classList.add('open'); el.scrollIntoView({behavior:'smooth', block:'center'}); }
   }, 50);
 }
 function jumpToQuestion(id) {
-  state.view = 'questions';
-  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.view === 'questions'));
-  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-questions'));
-  render();
+  switchView('questions');
   setTimeout(() => {
     const el = document.querySelector(`.question[data-id="${id}"]`);
     if (el) { el.classList.add('open'); el.scrollIntoView({behavior:'smooth', block:'center'}); }
   }, 50);
 }
 function jumpToPerson(name) {
-  state.view = 'people';
   state.search = name;
   document.getElementById('globalSearch').value = name;
-  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.view === 'people'));
-  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-people'));
-  render();
+  switchView('people');
 }
 
 /* === QUESTIONS === */
